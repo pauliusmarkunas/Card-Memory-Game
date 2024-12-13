@@ -93,7 +93,7 @@ function insertNewCards(number) {
     card.classList.add("card");
     const cardEl = document.createElement("img");
     cardEl.id = `el${el}`;
-    cardEl.src = `/assets/cards/${el}.svg`;
+    cardEl.src = `assets/cards/${el}.svg`;
     cardEl.classList.add("card-el");
     card.append(cardEl);
     gameSection.append(card);
@@ -109,7 +109,7 @@ function turnOverCards() {
 // add argument for attribute 'loop', by deffault it should be on
 function playNewMusic(name, isLoop = true) {
   bgAudioEl.loop = isLoop;
-  bgAudioEl.src = `/assets/music/${name}.mp3`;
+  bgAudioEl.src = `assets/music/${name}.mp3`;
   bgAudioEl.play();
 }
 
