@@ -39,7 +39,7 @@
 }
 
 html {
-  font-size: 10px;
+  font-size: 62.5%;
   color: white;
 }
 
@@ -239,11 +239,12 @@ body {
 
 @media screen and (max-width: 768px) {
   html {
-    font-size: 8px;
+    font-size: 80%;
   }
   body {
     position: relative;
     padding: 0 2rem;
+    padding-top: 20%;
   }
 
   #music-toggle {
@@ -263,7 +264,28 @@ body {
   }
   .game-container {
     grid-template-columns: var(--mobile-grid-columns);
-    max-width: 100%;
-    max-height: 90vh;
+    height: 80vh;
+    width: auto;
+  }
+
+  .game-title {
+    display: none;
+  }
+
+  #music-toggle {
+    font-size: var(--font-xs);
+    left: 1rem;
+    top: 1rem;
+  }
+
+  .status-container {
+    left: 1rem;
+    top: 3rem;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  html {
+    font-size: 40%;
   }
 }
