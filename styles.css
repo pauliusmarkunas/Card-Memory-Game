@@ -240,11 +240,13 @@ body {
 @media screen and (max-width: 768px) {
   html {
     font-size: 80%;
+    width: 100vw;
   }
   body {
     position: relative;
     padding: 0 2rem;
-    padding-top: 20%;
+    padding-top: 35%;
+    width: 100%;
   }
 
   #music-toggle {
@@ -264,7 +266,7 @@ body {
   }
   .game-container {
     grid-template-columns: var(--mobile-grid-columns);
-    height: 80vh;
+    height: 70vh;
     width: auto;
   }
 
@@ -281,6 +283,13 @@ body {
   .status-container {
     left: 1rem;
     top: 3rem;
+  }
+  h1 {
+    font-size: 3rem !important;
+  }
+  p {
+    font-size: var(--font-s) !important;
+    width: 100% !important;
   }
 }
 
