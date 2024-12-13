@@ -25,6 +25,10 @@
 
   /* transition */
   --mainTransition: all 0.3s linear;
+
+  /* GRID COLUMNS */
+  --mobile-grid-columns: repeat(2, 1fr);
+  --desktop-grid-columns: repeat(4, 1fr);
 }
 
 * {
@@ -47,6 +51,7 @@ body {
 
 body {
   padding-bottom: var(--spacing-xxl);
+  width: 100%;
 }
 
 /* JS */
@@ -82,6 +87,8 @@ body {
   object-fit: cover;
   object-position: center;
   z-index: -1;
+  width: 100vw;
+  height: 100vh;
 }
 
 .game-title {
@@ -100,6 +107,7 @@ body {
     font-size: var(--font-l);
   }
   p {
+    font-size: var(--font-m);
     text-align: center;
     letter-spacing: 2px;
     line-height: 1.5;
@@ -113,7 +121,7 @@ body {
   background-color: rgba(0, 0, 0, 0.279);
   margin-top: var(--spacing-m);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: var(--desktop-grid-columns);
   gap: var(--spacing-s);
   align-items: stretch;
   justify-content: stretch;
@@ -173,6 +181,7 @@ body {
   h1 {
     font-size: 12rem;
     color: red;
+    text-align: center;
   }
   button {
     color: red;
@@ -187,5 +196,72 @@ body {
   h1 {
     font-size: 12rem;
     color: green;
+    text-align: center;
+  }
+}
+
+/* GAME WIN */
+.game-win-container {
+  h1 {
+    font-size: 12rem;
+    color: green;
+    text-align: center;
+    animation: wobble 1s ease-in-out infinite;
+  }
+  button {
+    background-color: green;
+  }
+}
+
+@keyframes wobble {
+  0% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-5deg);
+  }
+  30% {
+    transform: rotate(3deg);
+  }
+  45% {
+    transform: rotate(-3deg);
+  }
+  60% {
+    transform: rotate(2deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 8px;
+  }
+  body {
+    position: relative;
+  }
+
+  #music-toggle {
+    position: absolute;
+    left: 2rem;
+    top: 2rem;
+  }
+
+  .status-container {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+  }
+
+  .game-title {
+    margin-top: 16rem;
+  }
+  .game-container {
+    grid-template-columns: var(--mobile-grid-columns);
+    width: 95%;
   }
 }

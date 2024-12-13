@@ -6,6 +6,7 @@ const statusSection = document.querySelector(".status-container");
 const initialSection = document.querySelector(".game-rules");
 const gameOverSection = document.querySelector(".game-over-container");
 const levelWinSection = document.querySelector(".win-container");
+const gameWinSection = document.querySelector(".game-win-container");
 
 // BUTTONS
 const startGameBtn = document.querySelector(".start-game-btn");
@@ -20,32 +21,41 @@ const timeLeft = document.querySelector(".time-left b");
 // ADDITIONAL FUNCTIONALITIES
 const audioMuteBtn = document.querySelector("#music-toggle");
 const bgAudioEl = document.querySelector("#background-audio");
+const root = document.documentElement;
 
 // DATA
 
 // card set number, time in sec, time to observe before game
 const levelData = [
-  [4, 10, 2],
-  [4, 25, 5],
-  [4, 20, 5],
-  [6, 30, 5],
+  [4, 20, 3],
+  [4, 15, 3],
+  [4, 10, 3],
   [6, 25, 5],
+  [6, 20, 5],
   [8, 40, 5],
-  [8, 35, 4],
+  [8, 35, 5],
   [8, 30, 4],
-  [8, 25, 2],
-  [8, 20, 2],
-  [8, 15, 1],
+  [8, 25, 4],
+  [8, 20, 3],
+  [8, 15, 2],
+  [12, 40, 4],
+  [12, 30, 4],
+  [16, 30, 3],
+  [16, 25, 2],
 ];
 
-const gameStats = {
-  level: 0,
-  pairsLeft: levelData[0][0],
-  timeLeft: "?",
-};
+const gameStats = {};
 console.log(levelData);
 
 // HELPER FUNCTIONS
+function gameStatsSet(level) {
+  Object.assign(gameStats, {
+    level: level,
+    leftCards: levelData[level][0],
+    timeLeft: levelData[level][1],
+    countdown: levelData[level][2],
+  });
+}
 
 // GENERATED RANDOMLY ALLOCATED NUMBERS ARRAY FROM 0 TO X
 function createMixedArray(cardSetNumber) {
@@ -64,7 +74,18 @@ function createMixedArray(cardSetNumber) {
   return array;
 }
 
+function setGridNum(number) {
+  if (number >= 6 && number < 8) {
+    root.style.setProperty("--mobile-grid-columns", "repeat(4, 1fr)");
+  } else if (number >= 8 && number < 12) {
+    root.style.setProperty("--mobile-grid-columns", "repeat(4, 1fr)");
+  } else if (number >= 12) {
+    root.style.setProperty("--desktop-grid-columns", "repeat(8, 1fr)");
+  }
+}
+
 function insertNewCards(number) {
+  setGridNum(number);
   gameSection.innerHTML = "";
   const randomArr = createMixedArray(number);
   randomArr.forEach((el) => {
@@ -85,7 +106,9 @@ function turnOverCards() {
   );
 }
 
-function playNewMusic(name) {
+// add argument for attribute 'loop', by deffault it should be on
+function playNewMusic(name, isLoop = true) {
+  bgAudioEl.loop = isLoop;
   bgAudioEl.src = `/assets/music/${name}.mp3`;
   bgAudioEl.play();
 }
@@ -96,20 +119,20 @@ function startGame() {
   gameSection.classList.remove("removed-el");
   statusSection.classList.remove("removed-el");
   level.textContent = `${gameStats.level}`;
-  leftCards.textContent = `${gameStats.pairsLeft}`;
+  leftCards.textContent = `${gameStats.leftCards}`;
   timeLeft.textContent = `${gameStats.timeLeft}`;
-  insertNewCards(levelData[gameStats.level][0]);
-  setTimeout(mainGamePart, levelData[gameStats.level][2] * 1000);
+  insertNewCards(gameStats.leftCards);
+  setTimeout(mainGamePart, gameStats.countdown * 1000);
 }
 
 function mainGamePart() {
   turnOverCards();
-  let timer = levelData[gameStats.level][1];
+  let timer = gameStats.timeLeft;
   const intervalId = setInterval(() => {
-    if (timer > 0 && gameStats.pairsLeft > 0) {
+    if (timer > 0 && gameStats.leftCards > 0) {
       timer--;
       timeLeft.textContent = `${timer}`;
-    } else if (gameStats.pairsLeft <= 0) clearInterval(intervalId);
+    } else if (gameStats.leftCards <= 0) clearInterval(intervalId);
     else {
       clearInterval(intervalId);
       gameOver();
@@ -118,7 +141,7 @@ function mainGamePart() {
 }
 
 function gameOver() {
-  playNewMusic("game-over");
+  playNewMusic("game-over", false);
   gameSection.classList.add("removed-el");
   statusSection.classList.add("removed-el");
   gameOverSection.classList.remove("removed-el");
@@ -137,12 +160,17 @@ window.addEventListener("load", () => {
 });
 
 // STARTING THE GAME
-startGameBtn.addEventListener("click", startGame);
+startGameBtn.addEventListener("click", () => {
+  gameStatsSet(0);
+  startGame();
+});
 
 // MAIN GAME LOGIC
 let firstCard = true;
-let firstCardEl;
+let firstCardEl = null;
+let isLocked = false;
 document.addEventListener("click", (e) => {
+  if (isLocked) return 0;
   if (
     e.target.classList.contains("card") &&
     e.target.firstElementChild.classList.contains("removed-el")
@@ -156,31 +184,39 @@ document.addEventListener("click", (e) => {
     } else {
       firstCard = true;
       const secondCardEl = clickedCardsChildEl;
-
+      isLocked = true;
       if (firstCardEl.id !== secondCardEl.id) {
         setTimeout(() => {
           firstCardEl.classList.add("removed-el");
           secondCardEl.classList.add("removed-el");
-        }, 500);
+          isLocked = false;
+        }, 300);
       } else {
-        gameStats.pairsLeft--;
-        leftCards.textContent = `${gameStats.pairsLeft}`;
+        gameStats.leftCards--;
+        leftCards.textContent = `${gameStats.leftCards}`;
         firstCardEl.parentNode.style.backgroundColor = "green";
         secondCardEl.parentNode.style.backgroundColor = "green";
+        isLocked = false;
       }
     }
-    if (gameStats.pairsLeft === 0) {
-      playNewMusic("congrads");
-      levelWinSection.classList.remove("removed-el");
-      gameSection.classList.add("removed-el");
-      statusSection.classList.add("removed-el");
-      // THIS ALL PART SHOULD BE SEPARATED INTO DIFFERENT FUNCTIONS
+    if (gameStats.leftCards === 0) {
       gameStats.level++;
+      if (gameStats.level === levelData.length) {
+        gameWinSection.classList.remove("removed-el");
+        gameSection.classList.add("removed-el");
+        statusSection.classList.add("removed-el");
+      } else {
+        playNewMusic("congrads", false);
+        levelWinSection.classList.remove("removed-el");
+        gameSection.classList.add("removed-el");
+        statusSection.classList.add("removed-el");
+        // THIS ALL PART SHOULD BE SEPARATED INTO DIFFERENT FUNCTIONS
+      }
     }
   }
 });
 
-// going back to main menu after loosing
+// going back to main menu
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("back-to-start-btn")) {
     initialSection.classList.remove("removed-el");
@@ -188,14 +224,16 @@ document.addEventListener("click", (e) => {
     playNewMusic("menu-audio");
     // dublicates
     levelWinSection.classList.add("removed-el");
+    gameWinSection.classList.add("removed-el");
   }
 });
 
 // start next level
 nextLvlBtn.addEventListener("click", () => {
+  gameStatsSet(gameStats.level);
   startGame();
   levelWinSection.classList.add("removed-el");
-  gameStats.pairsLeft = levelData[gameStats.level][0];
+  gameStats.leftCards = levelData[gameStats.level][0];
   gameStats.timeLeft = levelData[gameStats.level][1];
 });
 
@@ -216,3 +254,8 @@ audioMuteBtn.addEventListener("click", () => {
 // check for click event on any of the cards.
 // if card is not opened, open it. If it is second card, compare it, if not, wait for 2nd
 // how to identify cards. how to compare thema
+
+// BUGS:
+// condition: when player selects incorrect card pair and selects other one right awway
+//outcome: one of the cards opens and stays open during the game
+// Expected outcome: Both incorrect cards should be closed every time.
