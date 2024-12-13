@@ -75,13 +75,12 @@ function createMixedArray(cardSetNumber) {
 }
 
 function setGridNum(number) {
-  if (number >= 6 && number < 8) {
-    root.style.setProperty("--mobile-grid-columns", "repeat(4, 1fr)");
-  } else if (number >= 8 && number < 12) {
-    root.style.setProperty("--mobile-grid-columns", "repeat(4, 1fr)");
-  } else if (number >= 12) {
+  // if (number === 4)
+  //   root.style.setProperty("--mobile-grid-columns", "repeat(2, 1fr)");
+  // else if (number === 6)
+  //   root.style.setProperty("--mobile-grid-columns", "repeat(4, 1fr)");
+  if (number >= 12)
     root.style.setProperty("--desktop-grid-columns", "repeat(8, 1fr)");
-  }
 }
 
 function insertNewCards(number) {

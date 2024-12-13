@@ -142,12 +142,12 @@ body {
 }
 
 .card-el {
-  width: 10rem;
+  width: 80%;
 }
 
 /* STATUS */
 .status-container {
-  width: 24rem;
+  width: 30rem;
   background-color: rgba(0, 0, 0, 0.279);
   padding: var(--spacing-s);
   position: fixed;
@@ -157,7 +157,8 @@ body {
   ul {
     list-style: none;
     li {
-      margin-top: var(--spacing-xs);
+      margin-top: var(--spacing-s);
+      font-size: var(--font-m);
     }
   }
 }
@@ -178,6 +179,7 @@ body {
 
 /* GAME OVER */
 .game-over-container {
+  width: var(--section-width);
   h1 {
     font-size: 12rem;
     color: red;
@@ -188,8 +190,13 @@ body {
   }
 }
 
+.back-to-start-btn {
+  background-color: rgb(192, 192, 192);
+}
+
 /* LEVEL UP */
 .win-container {
+  width: var(--section-width);
   .next-lvl-btn {
     background-color: green;
   }
@@ -198,10 +205,17 @@ body {
     color: green;
     text-align: center;
   }
+  .btn-container {
+    display: flex;
+    gap: var(--spacing-s);
+    align-items: stretch;
+    justify-content: center;
+  }
 }
 
 /* GAME WIN */
 .game-win-container {
+  width: var(--section-width);
   h1 {
     font-size: 12rem;
     color: green;
@@ -237,64 +251,52 @@ body {
   }
 }
 
-@media screen and (max-width: 768px) {
-  html {
-    font-size: 80%;
-    width: 100vw;
-  }
-  body {
-    position: relative;
-    padding: 0 2rem;
-    padding-top: 35%;
-    width: 100%;
-  }
-
-  #music-toggle {
-    position: absolute;
-    left: 2rem;
-    top: 2rem;
-  }
-
+@media screen and (max-width: 1300px) {
   .status-container {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-  }
-
-  .game-title {
-    margin-top: 16rem;
-  }
-  .game-container {
-    grid-template-columns: var(--mobile-grid-columns);
-    height: 70vh;
     width: auto;
   }
-
-  .game-title {
-    display: none;
-  }
-
-  #music-toggle {
-    font-size: var(--font-xs);
-    left: 1rem;
-    top: 1rem;
-  }
-
-  .status-container {
-    left: 1rem;
-    top: 3rem;
-  }
-  h1 {
-    font-size: 3rem !important;
-  }
-  p {
-    font-size: var(--font-s) !important;
-    width: 100% !important;
+  .status-container ul li {
+    font-size: var(--font-s);
   }
 }
 
-@media screen and (max-width: 370px) {
+@media screen and (max-width: 1150px) {
+  #music-toggle {
+    position: static;
+    margin-top: var(--spacing-xs);
+  }
+
+  .status-container {
+    position: static;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    --section-width: 40rem;
+  }
+
+  .section h1 {
+    font-size: var(--font-xxl);
+  }
+
+  .btn-container {
+    flex-direction: column;
+  }
+  .game-title {
+    font-size: var(--font-m);
+  }
+}
+
+@media screen and (max-width: 425px) {
   html {
     font-size: 40%;
+  }
+}
+
+@media screen and (max-width: 275px) {
+  html {
+    font-size: 30%;
   }
 }

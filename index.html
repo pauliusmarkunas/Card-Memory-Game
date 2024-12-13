@@ -29,6 +29,15 @@
       <source src="assets/music/menu-audio.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
+    <button id="music-toggle">Turn off music</button>
+    <section class="status-container">
+      <h2>STATS</h2>
+      <ul>
+        <li class="level">LEVEL: <b>x</b></li>
+        <li class="left-card-pairs">PAIRS LEFT: <b>x</b></li>
+        <li class="time-left">TIME LEFT: <b>X</b> sec</li>
+      </ul>
+    </section>
     <h1 class="game-title">MEMORY CHECKER GAME</h1>
     <div class="game-rules flex-col-center">
       <h2>Game Rules</h2>
@@ -38,31 +47,22 @@
       </p>
       <button class="start-game-btn btn-big">START THE GAME!</button>
     </div>
-    <section class="status-container">
-      <h2>STATS</h2>
-      <ul>
-        <li class="level">LEVEL: <b>x</b></li>
-        <li class="left-card-pairs">PAIRS LEFT: <b>x</b></li>
-        <li class="time-left">TIME LEFT: <b>X</b> sec</li>
-      </ul>
-    </section>
     <main class="game-container"></main>
-    <section class="game-over-container flex-col-center removed-el">
+    <section class="game-over-container flex-col-center removed-el section">
       <h1>GAME OVER</h1>
       <button class="back-to-start-btn btn-big">GO BACK TO START</button>
     </section>
-    <section class="game-win-container flex-col-center removed-el">
+    <section class="game-win-container flex-col-center removed-el section">
       <h1>YOU WON THE GAME!</h1>
       <button class="back-to-start-btn btn-big">GO BACK TO START</button>
     </section>
-    <section class="win-container flex-col-center removed-el">
+    <section class="win-container flex-col-center removed-el section">
       <h1>CONGRADS!</h1>
       <div class="btn-container">
         <button class="back-to-start-btn btn-big">GO BACK TO START</button>
         <button class="next-lvl-btn btn-big">START NEXT LEVEL</button>
       </div>
     </section>
-    <button id="music-toggle">Turn off music</button>
     <script src="script.js" defer></script>
   </body>
 </html>
