@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Memory checker game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="flex-col-center">
+    <video id="background-video" autoplay loop muted>
+      <source src="/assets/background-video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <audio id="background-audio" autoplay loop>
+      <source src="/assets/music/menu-audio.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <h1 class="game-title">MEMORY CHECKER GAME</h1>
+    <div class="game-rules flex-col-center">
+      <h2>Game Rules</h2>
+      <p>
+        Match all pairs of identical cards before the time runs out. Lelel up
+        and win the game!
+      </p>
+      <button class="start-game-btn btn-big">START THE GAME!</button>
+    </div>
+    <section class="status-container">
+      <h2>STATS</h2>
+      <ul>
+        <li class="level">LEVEL: <b>x</b></li>
+        <li class="left-card-pairs">PAIRS LEFT: <b>x</b></li>
+        <li class="time-left">TIME LEFT: <b>X</b> sec</li>
+      </ul>
+    </section>
+    <main class="game-container"></main>
+    <section class="game-over-container flex-col-center removed-el">
+      <h1>GAME OVER</h1>
+      <button class="back-to-start-btn btn-big">GO BACK TO START</button>
+    </section>
+    <section class="win-container flex-col-center removed-el">
+      <h1>CONGRADS!</h1>
+      <div class="btn-container">
+        <button class="back-to-start-btn btn-big">GO BACK TO START</button>
+        <button class="next-lvl-btn btn-big">START NEXT LEVEL</button>
+      </div>
+    </section>
+    <button id="music-toggle">Turn off music</button>
+    <script src="script.js" defer></script>
+  </body>
+</html>

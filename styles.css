@@ -1,0 +1,191 @@
+:root {
+  /* BGLOBAL */
+  --section-width: 60rem;
+
+  /* FONT-WEIGHTS */
+  --w-light: 200;
+  --w-medium: 400;
+  --w-bold: 700;
+
+  /* FONT SIZES */
+  --font-xs: 1rem;
+  --font-s: 1.2rem;
+  --font-m: 1.8rem;
+  --font-l: 2.4rem;
+  --font-xl: 3.6rem;
+  --font-xxl: 4.2rem;
+
+  /* White spacing */
+  --spacing-xs: 0.8rem;
+  --spacing-s: 1.6rem;
+  --spacing-m: 3rem;
+  --spacing-l: 4.2rem;
+  --spacing-xl: 6rem;
+  --spacing-xxl: 10rem;
+
+  /* transition */
+  --mainTransition: all 0.3s linear;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Press Start 2P", system-ui;
+}
+
+html {
+  font-size: 10px;
+  color: white;
+}
+
+html,
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  padding-bottom: var(--spacing-xxl);
+}
+
+/* JS */
+.removed-el {
+  display: none !important;
+}
+
+/* reusable */
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-big {
+  font-size: var(--font-m);
+  margin-top: var(--spacing-s);
+  padding: var(--spacing-s);
+  border: none;
+  font-weight: var(--w-bold);
+}
+
+.btn-big:hover {
+  background-color: rgba(0, 0, 0, 0.279);
+  color: white;
+  cursor: pointer;
+}
+
+/* HELPERS */
+#background-video {
+  position: fixed;
+  inset: 0;
+  object-fit: cover;
+  object-position: center;
+  z-index: -1;
+}
+
+.game-title {
+  color: white;
+  text-align: center;
+  margin-top: 6rem;
+  font-size: 3rem;
+}
+
+/* INTRO SCREEN */
+.game-rules {
+  width: var(--section-width);
+  margin-top: var(--spacing-xxl);
+
+  h2 {
+    font-size: var(--font-l);
+  }
+  p {
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 1.5;
+    margin-top: var(--spacing-s);
+  }
+}
+
+/* GAME SCREEN */
+.game-container {
+  width: var(--section-width);
+  background-color: rgba(0, 0, 0, 0.279);
+  margin-top: var(--spacing-m);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-s);
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.card {
+  background-color: white;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--mainTransition);
+}
+
+.card:hover {
+  cursor: pointer;
+  background-color: rgb(202, 202, 202);
+}
+
+.card-el {
+  width: 10rem;
+}
+
+/* STATUS */
+.status-container {
+  width: 24rem;
+  background-color: rgba(0, 0, 0, 0.279);
+  padding: var(--spacing-s);
+  position: fixed;
+  right: 2rem;
+  top: 2rem;
+
+  ul {
+    list-style: none;
+    li {
+      margin-top: var(--spacing-xs);
+    }
+  }
+}
+
+/* MUSIC BUTTON */
+#music-toggle {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.279);
+  font-size: var(--font-m);
+  position: fixed;
+  left: 2rem;
+  top: 2rem;
+}
+
+#music-toggle {
+  cursor: pointer;
+}
+
+/* GAME OVER */
+.game-over-container {
+  h1 {
+    font-size: 12rem;
+    color: red;
+  }
+  button {
+    color: red;
+  }
+}
+
+/* LEVEL UP */
+.win-container {
+  .next-lvl-btn {
+    background-color: green;
+  }
+  h1 {
+    font-size: 12rem;
+    color: green;
+  }
+}
