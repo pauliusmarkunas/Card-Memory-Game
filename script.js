@@ -110,8 +110,10 @@ function playNewMusic(name, isLoop = true) {
   bgAudioEl.loop = isLoop;
   bgAudioEl.src = `assets/music/${name}.mp3`;
   bgAudioEl.play();
+  document.querySelector(".music-toggle-container").classList.remove("show");
 }
 
+// Option to fix bug (access mainGamePart funtion returned value and clear previous Interval)
 function startGame() {
   playNewMusic(`${gameStats.level}`);
   initialSection.classList.add("removed-el");
@@ -137,6 +139,7 @@ function mainGamePart() {
       gameOver();
     }
   }, 1000);
+  return intervalId;
 }
 
 function gameOver() {
@@ -153,6 +156,7 @@ window.addEventListener("load", () => {
   const audio = document.getElementById("background-audio");
   if (audio.paused) {
     audio.play();
+    document.querySelector(".music-toggle-container").classList.remove("show");
   }
   gameSection.classList.add("removed-el");
   statusSection.classList.add("removed-el");
@@ -242,19 +246,17 @@ nextLvlBtn.addEventListener("click", () => {
 audioMuteBtn.addEventListener("click", () => {
   if (!bgAudioEl.paused) {
     bgAudioEl.pause();
-    audioMuteBtn.textContent = "Turn On Music";
+    document.querySelector(".music-toggle-container").classList.add("show");
   } else {
     bgAudioEl.play();
-    audioMuteBtn.textContent = "Turn Off Music";
+    document.querySelector(".music-toggle-container").classList.remove("show");
   }
 });
-
-// GAME LOGIC(main part)
-// check for click event on any of the cards.
-// if card is not opened, open it. If it is second card, compare it, if not, wait for 2nd
-// how to identify cards. how to compare thema
 
 // BUGS:
 // condition: when player selects incorrect card pair and selects other one right awway
 //outcome: one of the cards opens and stays open during the game
 // Expected outcome: Both incorrect cards should be closed every time.
+
+// BACKLOG:
+// add settings object for music on or off

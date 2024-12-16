@@ -165,15 +165,35 @@ body {
 
 /* MUSIC BUTTON */
 #music-toggle {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.279);
-  font-size: var(--font-m);
+  stroke: white;
+}
+
+.music-toggle-container {
+  width: 6rem;
   position: fixed;
   left: 2rem;
   top: 2rem;
+  display: inline-block;
 }
 
-#music-toggle {
+.music-toggle-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: red;
+  transform: translateY(-50%);
+  transform: rotate(45deg);
+  display: none;
+}
+
+.music-toggle-container.show::before {
+  display: block;
+}
+
+#music-toggle:hover {
   cursor: pointer;
 }
 
@@ -261,14 +281,15 @@ body {
 }
 
 @media screen and (max-width: 1150px) {
-  #music-toggle {
-    position: static;
-    margin-top: var(--spacing-xs);
+  .music-toggle-container {
+    position: relative;
+    margin: var(--spacing-s) 0;
   }
 
   .status-container {
     position: static;
     text-align: center;
+    margin-top: 2.4rem;
   }
 }
 
