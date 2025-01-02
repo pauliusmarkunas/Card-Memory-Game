@@ -307,6 +307,11 @@ body {
   }
   .game-title {
     font-size: var(--font-m);
+    display: none;
+  }
+
+  .game-container {
+    grid-template-columns: var(--mobile-grid-columns);
   }
 }
 

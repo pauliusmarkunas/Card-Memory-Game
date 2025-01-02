@@ -17,6 +17,7 @@ const nextLvlBtn = document.querySelector(".next-lvl-btn");
 const level = document.querySelector(".level b");
 const leftCards = document.querySelector(".left-card-pairs b");
 const timeLeft = document.querySelector(".time-left b");
+sessionStorage.setItem("audioStatus", true);
 
 // ADDITIONAL FUNCTIONALITIES
 const audioMuteBtn = document.querySelector("#music-toggle");
@@ -45,7 +46,6 @@ const levelData = [
 ];
 
 const gameStats = {};
-console.log(levelData);
 
 // HELPER FUNCTIONS
 function gameStatsSet(level) {
@@ -75,12 +75,9 @@ function createMixedArray(cardSetNumber) {
 }
 
 function setGridNum(number) {
-  // if (number === 4)
-  //   root.style.setProperty("--mobile-grid-columns", "repeat(2, 1fr)");
-  // else if (number === 6)
-  //   root.style.setProperty("--mobile-grid-columns", "repeat(4, 1fr)");
   if (number >= 12)
     root.style.setProperty("--desktop-grid-columns", "repeat(8, 1fr)");
+  root.style.setProperty("--mobile-grid-columns", "repeat(4, 1fr)");
 }
 
 function insertNewCards(number) {
@@ -109,8 +106,7 @@ function turnOverCards() {
 function playNewMusic(name, isLoop = true) {
   bgAudioEl.loop = isLoop;
   bgAudioEl.src = `assets/music/${name}.mp3`;
-  bgAudioEl.play();
-  document.querySelector(".music-toggle-container").classList.remove("show");
+  if (sessionStorage.getItem("audioStatus") === "true") bgAudioEl.play();
 }
 
 // Option to fix bug (access mainGamePart funtion returned value and clear previous Interval)
@@ -131,6 +127,56 @@ function mainGamePart() {
   let timer = gameStats.timeLeft;
   const intervalId = setInterval(() => {
     if (timer > 0 && gameStats.leftCards > 0) {
+      // INSERTED (PLEASE FIX THIS MESS)
+      let firstCard = true;
+      let firstCardEl = null;
+      let isLocked = false;
+      document.addEventListener("click", (e) => {
+        if (isLocked) return 0;
+        if (
+          e.target.classList.contains("card") &&
+          e.target.firstElementChild.classList.contains("removed-el")
+        ) {
+          const clickedCardsChildEl = e.target.firstElementChild;
+          clickedCardsChildEl.classList.remove("removed-el");
+          if (firstCard) {
+            firstCard = false;
+            firstCardEl = clickedCardsChildEl;
+          } else {
+            firstCard = true;
+            const secondCardEl = clickedCardsChildEl;
+            isLocked = true;
+            if (firstCardEl.id !== secondCardEl.id) {
+              setTimeout(() => {
+                firstCardEl.classList.add("removed-el");
+                secondCardEl.classList.add("removed-el");
+                isLocked = false;
+              }, 300);
+            } else {
+              gameStats.leftCards--;
+              leftCards.textContent = `${gameStats.leftCards}`;
+              firstCardEl.parentNode.style.backgroundColor = "green";
+              secondCardEl.parentNode.style.backgroundColor = "green";
+              isLocked = false;
+            }
+          }
+          if (gameStats.leftCards === 0) {
+            gameStats.level++;
+            if (gameStats.level === levelData.length) {
+              gameWinSection.classList.remove("removed-el");
+              gameSection.classList.add("removed-el");
+              statusSection.classList.add("removed-el");
+            } else {
+              playNewMusic("congrads", false);
+              levelWinSection.classList.remove("removed-el");
+              gameSection.classList.add("removed-el");
+              statusSection.classList.add("removed-el");
+            }
+            clearInterval(intervalId);
+          }
+        }
+      });
+      // END
       timer--;
       timeLeft.textContent = `${timer}`;
     } else if (gameStats.leftCards <= 0) clearInterval(intervalId);
@@ -168,57 +214,6 @@ startGameBtn.addEventListener("click", () => {
   startGame();
 });
 
-// MAIN GAME LOGIC
-let firstCard = true;
-let firstCardEl = null;
-let isLocked = false;
-document.addEventListener("click", (e) => {
-  if (isLocked) return 0;
-  if (
-    e.target.classList.contains("card") &&
-    e.target.firstElementChild.classList.contains("removed-el")
-  ) {
-    const clickedCardsChildEl = e.target.firstElementChild;
-    clickedCardsChildEl.classList.remove("removed-el");
-    // e.target.style.backgroundColor = "red";
-    if (firstCard) {
-      firstCard = false;
-      firstCardEl = clickedCardsChildEl;
-    } else {
-      firstCard = true;
-      const secondCardEl = clickedCardsChildEl;
-      isLocked = true;
-      if (firstCardEl.id !== secondCardEl.id) {
-        setTimeout(() => {
-          firstCardEl.classList.add("removed-el");
-          secondCardEl.classList.add("removed-el");
-          isLocked = false;
-        }, 300);
-      } else {
-        gameStats.leftCards--;
-        leftCards.textContent = `${gameStats.leftCards}`;
-        firstCardEl.parentNode.style.backgroundColor = "green";
-        secondCardEl.parentNode.style.backgroundColor = "green";
-        isLocked = false;
-      }
-    }
-    if (gameStats.leftCards === 0) {
-      gameStats.level++;
-      if (gameStats.level === levelData.length) {
-        gameWinSection.classList.remove("removed-el");
-        gameSection.classList.add("removed-el");
-        statusSection.classList.add("removed-el");
-      } else {
-        playNewMusic("congrads", false);
-        levelWinSection.classList.remove("removed-el");
-        gameSection.classList.add("removed-el");
-        statusSection.classList.add("removed-el");
-        // THIS ALL PART SHOULD BE SEPARATED INTO DIFFERENT FUNCTIONS
-      }
-    }
-  }
-});
-
 // going back to main menu
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("back-to-start-btn")) {
@@ -244,12 +239,14 @@ nextLvlBtn.addEventListener("click", () => {
 
 // audio toggle on off
 audioMuteBtn.addEventListener("click", () => {
-  if (!bgAudioEl.paused) {
+  if (sessionStorage.getItem("audioStatus") === "true") {
     bgAudioEl.pause();
     document.querySelector(".music-toggle-container").classList.add("show");
+    sessionStorage.setItem("audioStatus", false);
   } else {
     bgAudioEl.play();
     document.querySelector(".music-toggle-container").classList.remove("show");
+    sessionStorage.setItem("audioStatus", true);
   }
 });
 
